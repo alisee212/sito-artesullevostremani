@@ -172,11 +172,24 @@ ul {
   max-width: 100%;
 }
 
-.sub-line-1,
-.sub-line-2 {
+.sub-line-1 {
   display: block;
   max-width: 100%;
   margin-bottom: 0.25rem;
+}
+
+.sub-line-2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.45rem;
+  max-width: 100%;
+  margin-bottom: 0.25rem;
+}
+
+.sub-line-2 > span {
+  white-space: nowrap;
 }
 
 /* Clean Inline Nav Menu */
@@ -250,11 +263,15 @@ ul {
 }
 
 #about.section {
-  padding: 1.5rem 0 1.25rem 0;
+  padding: 1.5rem 0 1rem 0;
 }
 
-#showroom.section {
-  padding: 1.25rem 0 1.5rem 0;
+#stats.section {
+  padding: 0.75rem 0 1.25rem 0;
+}
+
+#lavori.section {
+  padding: 1.25rem 0 1.35rem 0;
 }
 
 #pricelist.section {
@@ -338,7 +355,60 @@ ul {
 }
 
 /* --------------------------------------------------------------------------
-   5. SHOWROOM DEI LAVORI (PURE PHOTO CAROUSEL)
+   5. I NUMERI DEL SALONE (CLOSELY SPACED WITH ELASTIC POP-UP ANIMATION)
+   -------------------------------------------------------------------------- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  max-width: 680px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.stat-card {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0.5rem 0.2rem;
+  text-align: center;
+  box-shadow: none;
+  transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+  opacity: 0;
+  transform: scale(0.6) translateY(30px);
+  will-change: transform, opacity;
+}
+
+.stat-card.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.stat-card:hover {
+  transform: scale(1.08) translateY(-3px);
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.stat-number {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 3.8rem);
+  font-weight: 400;
+  color: var(--accent-burgundy);
+  line-height: 1.1;
+  margin-bottom: 0.2rem;
+}
+
+.stat-label {
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  line-height: 1.35;
+}
+
+/* --------------------------------------------------------------------------
+   6. SHOWROOM / LAVORI DEI LAVORI (PURE PHOTO CAROUSEL)
    -------------------------------------------------------------------------- */
 .showroom-horizontal-scroll {
   display: flex;
@@ -389,7 +459,7 @@ ul {
 }
 
 /* --------------------------------------------------------------------------
-   6. LISTINO PREZZI UFFICIALE (RESPONSIVE SCROLL CAROUSEL)
+   7. LISTINO PREZZI UFFICIALE (RESPONSIVE SCROLL CAROUSEL)
    -------------------------------------------------------------------------- */
 .pricelist-carousel-controls {
   display: flex;
@@ -524,13 +594,8 @@ ul {
   white-space: nowrap;
 }
 
-.card-footer-cta {
-  padding-top: 0.5rem;
-  border-top: 1px solid var(--border-light);
-}
-
 /* --------------------------------------------------------------------------
-   7. RECENSIONI CLIENTI (REVIEWS GRID)
+   8. RECENSIONI CLIENTI (REVIEWS GRID)
    -------------------------------------------------------------------------- */
 .reviews-grid {
   display: grid;
@@ -593,7 +658,7 @@ ul {
 }
 
 /* --------------------------------------------------------------------------
-   8. FOOTER & SOCIAL BUTTONS
+   9. FOOTER & SOCIAL BUTTONS
    -------------------------------------------------------------------------- */
 .footer {
   background: rgba(255, 255, 255, 0.7);
@@ -665,7 +730,7 @@ ul {
 }
 
 /* --------------------------------------------------------------------------
-   9. FLOATING SCROLL-TO-TOP BUTTON
+   10. FLOATING SCROLL-TO-TOP BUTTON
    -------------------------------------------------------------------------- */
 .back-to-top-btn {
   position: fixed;
@@ -701,7 +766,7 @@ ul {
 }
 
 /* --------------------------------------------------------------------------
-   10. ADVANCED MOBILE RESPONSIVE MEDIA QUERIES
+   11. ADVANCED MOBILE RESPONSIVE MEDIA QUERIES
    -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
   .clean-brand-header {
@@ -746,7 +811,21 @@ ul {
   }
 
   #about.section {
-    padding: 1.25rem 0 1.1rem 0;
+    padding: 1.25rem 0 0.85rem 0;
+  }
+
+  #stats.section {
+    padding: 0.65rem 0 1.1rem 0;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    max-width: 280px;
+  }
+
+  .stat-card {
+    padding: 0.35rem 0;
   }
 
   .section-title {

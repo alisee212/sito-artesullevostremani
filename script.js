@@ -1,51 +1,75 @@
+// Disable automatic browser scroll restoration on refresh and force scroll to top (0,0)
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Standard Carousel for Price List
-  function setupStandardCarousel(containerId, prevId, nextId, dotsContainerId) {
-    const container = document.getElementById(containerId);
-    const prevBtn = document.getElementById(prevId);
-    const nextBtn = document.getElementById(nextId);
-    const dotsContainer = document.getElementById(dotsContainerId);
+  // Force scroll to top on DOMReady
+  window.scrollTo(0, 0);
 
-    if (!container) return;
+  // Statistics Intersection Observer & Count-Up Animation
+  const statsSection = document.getElementById('stats');
+  if (statsSection) {
+    const statCards = statsSection.querySelectorAll('.stat-card');
+    let animated = false;
 
-    const getCardWidth = () => {
-      const firstCard = container.querySelector('.pricelist-card');
-      return firstCard ? firstCard.offsetWidth + 20 : 300;
+    const animateCountUp = (el) => {
+      const target = parseFloat(el.getAttribute('data-target'));
+      const suffix = el.getAttribute('data-suffix') || '';
+      const decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+      const duration = 1600; // ms
+      const startTime = performance.now();
+
+      const updateCount = (currentTime) => {
+        const elapsedTime = currentTime - startTime;
+        const progress = Math.min(elapsedTime / duration, 1);
+        const easeProgress = 1 - Math.pow(1 - progress, 3); // Ease out cubic
+        const currentValue = easeProgress * target;
+
+        if (decimals > 0) {
+          const formatted = currentValue.toFixed(decimals).replace('.', ',');
+          el.textContent = `${formatted}${suffix}`;
+        } else {
+          const formatted = Math.floor(currentValue);
+          el.textContent = `${formatted}${suffix}`;
+        }
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCount);
+        } else {
+          if (decimals > 0) {
+            el.textContent = `${target.toFixed(decimals).replace('.', ',')}${suffix}`;
+          } else {
+            el.textContent = `${target}${suffix}`;
+          }
+        }
+      };
+
+      requestAnimationFrame(updateCount);
     };
 
-    if (prevBtn) {
-      prevBtn.addEventListener('click', () => {
-        container.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !animated) {
+          animated = true;
+          statCards.forEach((card) => {
+            const delay = parseInt(card.getAttribute('data-delay') || '0', 10);
+            setTimeout(() => {
+              card.classList.add('visible');
+              const numEl = card.querySelector('.stat-number');
+              if (numEl) animateCountUp(numEl);
+            }, delay);
+          });
+        }
       });
-    }
+    }, { threshold: 0.15 });
 
-    if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
-        container.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
-      });
-    }
-
-    if (dotsContainer) {
-      const dots = dotsContainer.querySelectorAll('.dot');
-      dots.forEach(dot => {
-        dot.addEventListener('click', () => {
-          const index = parseInt(dot.getAttribute('data-index'), 10);
-          container.scrollTo({ left: index * getCardWidth(), behavior: 'smooth' });
-        });
-      });
-
-      container.addEventListener('scroll', () => {
-        const scrollPosition = container.scrollLeft;
-        const activeIndex = Math.round(scrollPosition / getCardWidth());
-        dots.forEach((dot, idx) => {
-          dot.classList.toggle('active', idx === activeIndex);
-        });
-      });
-    }
+    observer.observe(statsSection);
   }
 
-  // Circular Infinite Carousel for Lavori (Last photo loops back to First photo)
+  // Circular Infinite Carousel Engine for Lavori & Price List
   function setupCircularCarousel(containerId, prevId, nextId, dotsContainerId) {
     const container = document.getElementById(containerId);
     const prevBtn = document.getElementById(prevId);
@@ -54,12 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!container) return;
 
-    const cards = container.querySelectorAll('.showroom-card');
+    const cards = container.querySelectorAll('.showroom-card, .pricelist-card');
     const totalCards = cards.length;
 
     const getCardWidth = () => {
-      const firstCard = container.querySelector('.showroom-card');
-      return firstCard ? firstCard.offsetWidth + 20 : 270;
+      const firstCard = container.querySelector('.showroom-card, .pricelist-card');
+      return firstCard ? firstCard.offsetWidth + 20 : 280;
     };
 
     const updateActiveDot = (index) => {
@@ -75,7 +99,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const cardWidth = getCardWidth();
         const maxScrollLeft = container.scrollWidth - container.clientWidth;
         
-        // If at or near the last photo, loop circular back to the first photo
         if (container.scrollLeft >= maxScrollLeft - 15) {
           container.scrollTo({ left: 0, behavior: 'smooth' });
         } else {
@@ -88,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
       prevBtn.addEventListener('click', () => {
         const cardWidth = getCardWidth();
         
-        // If at or near the first photo, loop circular to the last photo
         if (container.scrollLeft <= 15) {
           container.scrollTo({ left: container.scrollWidth, behavior: 'smooth' });
         } else {
@@ -116,8 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initialize Carousels
-  setupStandardCarousel('pricelist-container', 'price-prev', 'price-next', 'carousel-dots');
+  // Initialize both Lavori and Price List as Circular Infinite Carousels
+  setupCircularCarousel('pricelist-container', 'price-prev', 'price-next', 'carousel-dots');
   setupCircularCarousel('lavori-container', 'lavori-prev', 'lavori-next', 'lavori-dots');
 
   // Back to Top Floating Button
