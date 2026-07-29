@@ -531,7 +531,7 @@ ul {
   padding: 1.2rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   box-shadow: var(--shadow-card);
   transition: var(--transition-normal);
   position: relative;
@@ -562,7 +562,7 @@ ul {
   display: flex;
   flex-direction: column;
   gap: 0.55rem;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0;
 }
 
 .price-item {
