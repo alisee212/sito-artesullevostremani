@@ -594,24 +594,32 @@ ul {
   white-space: nowrap;
 }
 
-/* --------------------------------------------------------------------------
-   8. RECENSIONI CLIENTI (REVIEWS GRID)
-   -------------------------------------------------------------------------- */
-.reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 0.95rem;
+.reviews-horizontal-scroll {
+  display: flex;
+  gap: 1.15rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0.25rem 0.15rem 0.65rem 0.15rem;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
   width: 100%;
 }
 
 .review-card {
+  flex: 0 0 300px;
+  max-width: 340px;
+  scroll-snap-align: center;
   background: #FFFFFF;
   border: 1px solid var(--border-light);
   border-radius: var(--border-radius-md);
   padding: 1.2rem;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
   box-shadow: var(--shadow-card);
   transition: var(--transition-normal);
+  position: relative;
 }
 
 .review-card:hover {

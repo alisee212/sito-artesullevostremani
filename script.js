@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     observer.observe(statsSection);
   }
 
-  // Circular Infinite Carousel Engine for Lavori & Price List
+  // Circular Infinite Carousel Engine for Lavori, Price List & Reviews
   function setupCircularCarousel(containerId, prevId, nextId, dotsContainerId) {
     const container = document.getElementById(containerId);
     const prevBtn = document.getElementById(prevId);
@@ -78,11 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!container) return;
 
-    const cards = container.querySelectorAll('.showroom-card, .pricelist-card');
+    const cards = container.querySelectorAll('.showroom-card, .pricelist-card, .review-card');
     const totalCards = cards.length;
 
     const getCardWidth = () => {
-      const firstCard = container.querySelector('.showroom-card, .pricelist-card');
+      const firstCard = container.querySelector('.showroom-card, .pricelist-card, .review-card');
       return firstCard ? firstCard.offsetWidth + 20 : 280;
     };
 
@@ -138,9 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initialize both Lavori and Price List as Circular Infinite Carousels
+  // Initialize Lavori, Price List and Reviews as Circular Infinite Carousels
   setupCircularCarousel('pricelist-container', 'price-prev', 'price-next', 'carousel-dots');
   setupCircularCarousel('lavori-container', 'lavori-prev', 'lavori-next', 'lavori-dots');
+  setupCircularCarousel('reviews-container', 'reviews-prev', 'reviews-next', 'reviews-dots');
 
   // Back to Top Floating Button
   const backToTopBtn = document.getElementById('back-to-top');
