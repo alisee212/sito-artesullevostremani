@@ -391,12 +391,14 @@ ul {
 }
 
 .stat-number {
-  font-family: var(--font-serif);
-  font-size: clamp(2.5rem, 6vw, 3.8rem);
-  font-weight: 400;
+  font-family: 'Playfair Display', 'Bodoni Moda', serif;
+  font-size: clamp(2.8rem, 6.5vw, 4.2rem);
+  font-weight: 600;
+  font-style: italic;
   color: var(--accent-burgundy);
   line-height: 1.1;
   margin-bottom: 0.2rem;
+  letter-spacing: 0.5px;
 }
 
 .stat-label {
@@ -869,9 +871,11 @@ ul {
     font-size: 0.94rem;
   }
 
-  .reviews-grid {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
+  .review-card {
+    flex: 0 0 85vw;
+    min-width: 260px;
+    max-width: 310px;
+    padding: 1rem 0.95rem;
   }
 
   .footer-links-row {
